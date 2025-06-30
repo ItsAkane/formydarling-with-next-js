@@ -10,7 +10,7 @@ export function Cabecalho() {
                 </div>
 
                 <Link href="/teamo"><div className="inline-block gb-[#ff4d94] text-white no-underline px-5 py-2.5 rounded-[20px] font-bold shadow-md text-[18px] transition hover:[#e60073]">Carta &lt;3</div></Link>
-                <Link href=""><div className="inline-block gb-[#ff4d94] text-white no-underline px-5 py-2.5 rounded-[20px] font-bold shadow-md text-[18px] transition hover:[#e60073]">Lembrancas &lt;3</div></Link>
+                <Link href="/lembrancas"><div className="inline-block gb-[#ff4d94] text-white no-underline px-5 py-2.5 rounded-[20px] font-bold shadow-md text-[18px] transition hover:[#e60073]">Lembrancas &lt;3</div></Link>
             </div >
         </>
     )
