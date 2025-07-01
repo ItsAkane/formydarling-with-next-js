@@ -8,10 +8,9 @@ type Props = {
 
 export function LembrancasCard({imagemSrc, alt, text}: Props) {
     return(
-        <div className="grid p-10 bg-[#ffe0cc] rounded-md m-2">
-            <Image src={imagemSrc} alt={alt}>
-                {text}
-            </Image>
+        <div className="p-10 bg-[#ffe0cc] rounded-md m-2 mt-">
+            <Image src={imagemSrc} alt={alt} className="rounded-lg"/>
+            <h3>{text}</h3>
         </div>
     )
 }

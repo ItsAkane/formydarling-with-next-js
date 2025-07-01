@@ -1,7 +1,25 @@
+'use client'
+import { useEffect, useState } from "react"
 import { Cabecalho } from "./Components/Cabecalho"
 import Temporizer from "./Components/Temporizer"
 
+
+
 export default function Home() {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const valorSalvo = localStorage.getItem("logado")
+    if(valorSalvo == "true"){
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("logado", String(isLoggedIn));  
+  }, [isLoggedIn]);
+
   return (
     <>
       <Cabecalho />

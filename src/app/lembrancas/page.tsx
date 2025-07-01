@@ -1,16 +1,28 @@
-import { Cabecalho } from "../Components/Cabecalho";
-import { LembrancasCard } from "../Components/LembrancasCard";
-import imagem1 from "../../../public/img/img_viada.jpeg";
+'use client'
+import { useEffect, useState } from "react";
+import { Cabecalho } from "../Components/Cabecalho"
+import { LoginCard } from "../Components/LoginCard"
 
-export default function lembrancas(){
-    return(
+export default function Lembrancas() {
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+    useEffect(() => {
+        const valorSalvo = localStorage.getItem("logado")
+        if (valorSalvo == "true") {
+            setIsLoggedIn(true);
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("logado", String(isLoggedIn));
+    }, [isLoggedIn]);
+
+
+    return (
         <>
             <Cabecalho />
-            <div className="flex items-center justify-center min-h-screen">
-                <LembrancasCard imagemSrc={imagem1} alt="teste1" text="ola"/>
-                <LembrancasCard imagemSrc={imagem1} alt="teste2" text="alo"/>
-                <LembrancasCard imagemSrc={imagem1} alt="teste3" text="oal"/>
-            </div>
+            <LoginCard />
         </>
     )
 }
