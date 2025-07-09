@@ -12,7 +12,8 @@ model Card {
   id         Int      @id @default(autoincrement())
   imagemUrl  String
   descricao  String
-  createdAt  DateTime @default(now())
+  createdAt  DateTime
+  autorLogin String
 }
 
 model User {

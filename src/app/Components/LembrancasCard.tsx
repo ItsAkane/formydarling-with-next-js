@@ -1,13 +1,6 @@
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
-type Props = {
-    imagemSrc: any;
-    alt?: any;
-    text?: string;
-};
-
-export function LembrancasCard({ imagemSrc, alt, text }: Props) {
+export function LembrancasCard() {
     const [cards, setCards] = useState<any[]>([]);
 
     useEffect(() => {
@@ -20,9 +13,9 @@ export function LembrancasCard({ imagemSrc, alt, text }: Props) {
     return (
         <div>
             {cards.map(card => (
-                <div key={card.id} className="p-10 bg-[#ffe0cc] rounded-md m-2 mt-">
-                    <img src={card.imagemSrc} alt={alt} className="rounded-lg" />
-                    <h3>{card.descricao}</h3>
+                <div key={card.id} className="p-10 bg-[#ffd1dc] rounded-md m-2 mt-">
+                    <img src={card.imagemUrl} alt="card" className="rounded-lg border" />
+                    <h3 className="mt-2">{card.descricao}</h3>
                 </div>
             ))}
         </div>

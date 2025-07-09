@@ -1,9 +1,9 @@
 'use client'
 import { Cabecalho } from "../../Components/Cabecalho";
 import { LembrancasCard } from "../../Components/LembrancasCard";
-import imagem1 from "../../../../public/img/img_viada.jpeg";
 import { useEffect, useState } from "react";
 import { ListCards } from "@/app/Components/ListCards";
+import { NewCard } from "@/app/Components/NewCard";
 
 
 export default function Photos() {
@@ -27,7 +27,8 @@ export default function Photos() {
             <>
                 <Cabecalho />
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full mt-20">
-                    <ListCards/>
+                    <LembrancasCard/>
+                    <NewCard/>
                 </div>
             </>
         )
