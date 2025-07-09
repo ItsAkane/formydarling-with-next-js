@@ -3,7 +3,6 @@
 # dependencies
 /node_modules
 /.pnp
-/prisma
 .pnp.*
 .yarn/*
 !.yarn/patches
