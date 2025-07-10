@@ -2,13 +2,14 @@
 import { Cabecalho } from "../../Components/Cabecalho";
 import { LembrancasCard } from "../../Components/LembrancasCard";
 import { useEffect, useState } from "react";
-import { ListCards } from "@/app/Components/ListCards";
 import { NewCard } from "@/app/Components/NewCard";
+import DialogCard from "@/app/Components/DiologCard";
 
 
 export default function Photos() {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
     useEffect(() => {
         const valorSalvo = localStorage.getItem("logado")
@@ -26,9 +27,10 @@ export default function Photos() {
         return (
             <>
                 <Cabecalho />
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full mt-20">
+                <div className="pt-8 pb-10 p-5 rounded-3xl bg-[#ffe0e7] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                     <LembrancasCard/>
-                    <NewCard/>
+                    <NewCard onclick={()=> setDialogIsOpen(true)}/>
+                    <DialogCard aberto={dialogIsOpen} onFechar={()=> setDialogIsOpen(false)}/>
                 </div>
             </>
         )

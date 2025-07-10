@@ -1,4 +1,5 @@
 'use client'
+import { log } from "console";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -44,6 +45,7 @@ export function LoginCard() {
         if(res.ok){
             console.log("Login valido", data.user);
             setIsLoggedIn(true);
+            localStorage.setItem("login", login)
             router.push("/lembrancas/photos");
         }else{
             setLoginIncorreto(true);
