@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import formidable from 'formidable';
+import * as formidable from 'formidable';
 import cloudinary from '@/lib/cloudinary';
 import { prisma } from '@/lib/prisma';
 
