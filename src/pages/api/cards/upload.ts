@@ -1,51 +1,56 @@
-import { prisma } from "@/lib/prisma";
-import { IncomingForm } from 'formidable-serverless';
-import { writeFile, mkdir } from "fs/promises";
+import { prisma } from '@/lib/prisma';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import * as formidable from 'formidable';
 import { v4 as uuidv4 } from 'uuid';
-import { NextRequest, NextResponse } from "next/server";
-import path from "path";
 import fs from 'fs';
-import { Fields, Files } from "formidable";
+import path from 'path';
 
 export const config = {
   api: {
-    bodyParser: false
+    bodyParser: false,
   },
 };
 
-export async function POST(req: NextRequest) {
-  try {
-    const form = new IncomingForm({ uploadDir: '/tmp', keepExtensions: true });
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  console.log('upload handler');
 
-    const reqNodeStream = (req as any).node?.req;
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Método não permitido' });
+  }
 
-    const data: any = await new Promise((resolve, reject) => {
-      form.parse(reqNodeStream, (err: any, fields: Fields, files: Files) => {
-        if (err) return reject(err);
-        resolve({ fields, files });
-      });
-    });
+  const form = formidable.default({
+    uploadDir: path.join(process.cwd(), 'public', 'uploads'),
+    keepExtensions: true,
+    maxFileSize: 5 * 1024 * 1024, // 5MB
+  });
 
-    const file = data.files?.imagem?.[0];
-    const descricao = data.fields?.descricao?.[0];
-    const autorLogin = data.fields?.autorLogin?.[0];
-    const createdAt = new Date(data.fields?.createdAt?.[0]);
+  const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  }
 
-    if (!file || !descricao || !autorLogin || !createdAt) {
-      return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      console.error('Erro no parse:', err);
+      return res.status(500).json({ error: 'Erro ao fazer upload' });
     }
+
+    const fileArray = files.imagem instanceof Array ? files.imagem : [files.imagem];
+    const file = fileArray[0];
+    if (!file) return res.status(400).json({ error: 'Arquivo não enviado' });
+
+    const descricao = fields.descricao?.[0] || '';
+    if (!fields.createdAt?.[0]) {
+      return res.status(400).json({ error: 'Campo "createdAt" é obrigatório' });
+    }
+    const createdAt = new Date(fields.createdAt[0]);
+    const autorLogin = fields.autorLogin?.[0] || '';
 
     const ext = path.extname(file.originalFilename || '');
     const newFileName = uuidv4() + ext;
+    const newPath = path.join(uploadDir, newFileName);
 
-    const destinationDir = path.join(process.cwd(), 'public', 'uploads');
-    if (!fs.existsSync(destinationDir)) {
-      await mkdir(destinationDir, { recursive: true });
-    }
-
-    const destinationPath = path.join(destinationDir, newFileName);
-    await writeFile(destinationPath, await file.toBuffer());
-
+    fs.renameSync(file.filepath, newPath);
     const imagemUrl = `/uploads/${newFileName}`;
 
     const novocard = await prisma.card.create({
@@ -57,9 +62,5 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(novocard);
-  } catch (error) {
-    console.error("Erro ao fazer upload:", error);
-    return NextResponse.json({ error: "Erro interno ao salvar card" }, { status: 500 });
-  }
-}
+    return res.status(201).json(novocard);
+  })};

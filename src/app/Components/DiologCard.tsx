@@ -1,7 +1,10 @@
 'use client'
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function DialogCard({ aberto, onFechar }: { aberto: boolean, onFechar: () => void }) {
+    const router = useRouter();
+
     if (!aberto) return;
     const [Descrição, setDescricao] = useState('');
     const [data, setData] = useState('');
@@ -34,6 +37,7 @@ export default function DialogCard({ aberto, onFechar }: { aberto: boolean, onFe
         if (res.ok) {
             alert('Card salvo!');
             onFechar();
+            window.location.reload()
         } else {
             alert('erro ao salvar card');
         }
