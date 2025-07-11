@@ -19,15 +19,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const form = formidable.default({
-    uploadDir: path.join(process.cwd(), 'public', 'uploads'),
+    uploadDir: '/tmp',
     keepExtensions: true,
     maxFileSize: 5 * 1024 * 1024, // 5MB
   });
 
   const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-  }
 
   form.parse(req, async (err, fields, files) => {
     if (err) {
