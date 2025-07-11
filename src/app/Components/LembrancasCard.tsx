@@ -2,8 +2,16 @@
 import { useEffect, useState } from "react";
 import { NewCard } from "./NewCard";
 
-export function LembrancasCard({ aberto, setar }: { aberto: boolean, setar: (value: boolean) => void }) {
-  const [cards, setCards] = useState<any[]>([]);
+interface Card {
+  id: number;
+  imagemUrl: string;
+  descricao: string;
+  createdAt: string;
+  autorLogin: string;
+}
+
+export function LembrancasCard({aberto, setar, setarDetalhe}: {aberto: boolean; setar: (value: boolean) => void;setarDetalhe: (id: number) => void;}) {
+  const [cards, setCards] = useState<Card[]>([]);
 
   useEffect(() => {
     fetch('/api/cards')
@@ -14,7 +22,11 @@ export function LembrancasCard({ aberto, setar }: { aberto: boolean, setar: (val
   return (
     <div className="justify-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {cards.map(card => (
-        <div key={card.id} className="w-[350px] h-[360px] bg-[#ffd1dc] rounded-xl shadow-md overflow-hidden border border-pink-300 hover:shadow-lg transition-shadow duration-300 m-2">
+        <div
+          key={card.id}
+          onClick={() => setarDetalhe(card.id)}
+          className="cursor-pointer w-[350px] h-[360px] bg-[#ffd1dc] rounded-xl shadow-md overflow-hidden border border-pink-300 hover:shadow-lg transition-shadow duration-300 m-2"
+        >
           <img src={card.imagemUrl} alt="card" className="w-full h-60 object-cover rounded-t-xl" />
           <div className="p-4">
             <h3 className="text-base font-medium text-gray-800">{card.descricao}</h3>
